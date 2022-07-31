@@ -1,3 +1,3 @@
 provider "google" {
-    project = "gcp-terraform-env"
+  project = "gcp-terraform-env"
 }

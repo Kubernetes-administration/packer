@@ -36,21 +36,21 @@ tempRootPass="`sudo grep 'temporary.*root@localhost' /var/log/mysqld.log | tail 
 #-------------------------------------------------------------------------------------------------------------------
 echo 'Setting up new mysql server root password'
 
-mysql -u "root" --password="$tempRootPass" --connect-expired-password -e "alter user root@localhost identified by '${DATABASE_PASSWORD}'; flush privileges;"
+mysql -u "root" --password="$tempRootPass" --connect-expired-password -e "alter user root@localhost identified by '${DATABASE_PASSWORD}'; flush privileges;" 2>/dev/null
 
 
 #-------------------------------------------------------------------------------------------------------------------
 # Do the Basic Hardening
 #-------------------------------------------------------------------------------------------------------------------
 
-mysql -u root --password="$DATABASE_PASSWORD" -e "DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'; FLUSH PRIVILEGES;"
+mysql -u root --password="$DATABASE_PASSWORD" -e "DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'; FLUSH PRIVILEGES;" 2>/dev/null
 # sudo systemctl status mysqld.service
 
 #-------------------------------------------------------------------------------------------------------------------
 # Perform a Sanity Check
 #-------------------------------------------------------------------------------------------------------------------
 echo "Sanity check: check if password login works for root."
-mysql -u root --password="$DATABASE_PASSWORD" -e quit
+mysql -u root --password="$DATABASE_PASSWORD" -e quit 2>/dev/null
 
 #-------------------------------------------------------------------------------------------------------------------
 # Enable Firewall
@@ -62,6 +62,4 @@ mysql -u root --password="$DATABASE_PASSWORD" -e quit
 #-------------------------------------------------------------------------------------------------------------------
 # Final Output
 #-------------------------------------------------------------------------------------------------------------------
-echo "MySQL server installation completed, root password: $DATABASE_PASSWORD";
-
-sudo echo "$DATABASE_PASSWORD" > password.txt
+#echo "MySQL server installation completed, root password: $DATABASE_PASSWORD";

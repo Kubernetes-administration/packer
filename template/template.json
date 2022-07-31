@@ -6,10 +6,12 @@
            "project_id": "gcp-terraform-env",
            "source_image_family": "rhel-8",
            "zone": "us-central1-a",
-           "ssh_username": "root",
-           "image_name": "portfolio-web-app-{{timestamp}}",
+           "ssh_username": "packer",
+           "image_name": "packer-{{timestamp}}",
            "image_description": "Web server for portfolio web app.",
            "image_storage_locations": ["us-central1"],
+           "omit_external_ip": "false",
+           "use_internal_ip": "false",
            "image_labels": {
                "developer": "rohan",
                "team": "cloud"
@@ -20,7 +22,11 @@
    "provisioners": [
        {
            "type": "shell",
-           "script": "mysql.sh"
-       }
-   ]
+           "script": "update.sh"
+       },
+       {
+        "type": "shell",
+        "script": "mysql.sh"
+        }
+    ]
 }
